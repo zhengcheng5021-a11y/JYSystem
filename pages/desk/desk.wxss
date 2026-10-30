@@ -1,0 +1,6 @@
+.hub-grid { display: flex; flex-wrap: wrap; gap: 14rpx; }
+.hub-cell { width: calc(50% - 7rpx); min-height: 190rpx; padding: 22rpx; border: 1rpx solid var(--line); border-radius: 26rpx; background: var(--surface); box-shadow: var(--shadow); color: var(--ink); text-align: left; }
+.hub-cell:active { transform: scale(.985); }
+.hub-icon { color: var(--jade); font-size: 30rpx; }
+.hub-name { margin-top: 17rpx; font-size: 28rpx; font-weight: 700; }
+.hub-desc { margin-top: 6rpx; color: var(--muted); font-size: 20rpx; line-height: 1.5; }

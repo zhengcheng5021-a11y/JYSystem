@@ -1,0 +1,7 @@
+{
+  "navigationStyle": "custom",
+  "navigationBarTitleText": "现场开单",
+  "usingComponents": {
+    "theme-switch": "/components/theme-switch/theme-switch"
+  }
+}

@@ -1,0 +1,6 @@
+.state-view { padding: 60rpx 28rpx; border: 1rpx dashed var(--line); border-radius: 18rpx; background: rgba(255, 253, 248, .55); text-align: center; }
+.state-mark { display: grid; width: 64rpx; height: 64rpx; margin: 0 auto 18rpx; place-items: center; border: 1rpx solid var(--line); border-radius: 50%; color: var(--jade); font-size: 30rpx; }
+.state-error .state-mark { color: var(--red); }
+.state-title { color: var(--ink); font-size: 28rpx; font-weight: 700; }
+.state-detail { margin-top: 10rpx; color: var(--muted); font-size: 23rpx; line-height: 1.6; overflow-wrap: anywhere; }
+.state-action { display: inline-flex; margin-top: 22rpx; padding: 13rpx 25rpx; border: 1rpx solid var(--jade); border-radius: 999rpx; color: var(--jade); font-size: 23rpx; }

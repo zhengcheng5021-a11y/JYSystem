@@ -1,0 +1,39 @@
+<app-nav title="库存台账" back="{{true}}"></app-nav>
+<view class="app-page" style="{{theme.style}}">
+  <view class="top-bar"><theme-switch bind:change="onTheme"></theme-switch><button class="top-meta" bindtap="toggleCost">{{showCost ? '掌柜模式 · 显示成本' : '柜面模式 · 隐藏成本'}}</button></view>
+  <view class="page-head"><view><view class="eyebrow-row"><text class="seal-dot"></text><text class="eyebrow">INVENTORY VAULT</text></view><view class="page-title">库存台账</view><view class="page-sub">支持柜面防窥隐藏成本，选中在库现货可一键带货去开单。</view></view><button class="head-action" bindtap="load">刷新</button></view>
+  <view class="grid-2" style="margin-bottom:20rpx;">
+    <view class="mini-metric"><view class="mini-metric-label">在库可售件数</view><view class="mini-metric-value">{{summary.onShelfCount}} 件</view><view class="muted small">在库总件数 {{summary.totalQty}}</view></view>
+    <view class="mini-metric"><view class="mini-metric-label">在库总标价</view><view class="mini-metric-value money">¥{{summary.saleText}}</view><view class="small" style="color:var(--gold);">{{showCost ? '总成本 ¥' + summary.costText : '点右上角可显隐成本'}}</view></view>
+  </view>
+  <view class="seg-tabs"><button class="seg-tab {{mode==='stock'?'active':''}}" data-mode="stock" bindtap="setMode">❖ 货品台账</button><button class="seg-tab {{mode==='ledger'?'active':''}}" data-mode="ledger" bindtap="setMode">出入库流水</button></view>
+  <block wx:if="{{mode==='stock'}}">
+    <view class="row" style="margin-bottom:16rpx;flex-wrap:wrap;"><button class="btn-mini {{status===''?'primary':''}}" data-status="" bindtap="setStatus">全部状态</button><button class="btn-mini {{status==='1'?'primary':''}}" data-status="1" bindtap="setStatus">在库可售</button><button class="btn-mini {{status==='3'?'primary':''}}" data-status="3" bindtap="setStatus">已售出</button></view>
+    <view class="row" style="margin-bottom:16rpx;"><input class="input-mini grow" value="{{keyword}}" placeholder="货号、条码或名称" placeholder-class="placeholder" bindinput="onKeyword" bindconfirm="search" /><button class="btn-mini" bindtap="search">查找</button></view>
+    <view wx:if="{{loading && !rows.length}}" class="state"><view class="state-title">正在查库存</view></view>
+    <view wx:elif="{{error && !rows.length}}" class="state" bindtap="load"><view class="state-title">库存加载失败</view><view>{{error}}</view><text class="state-action">重试</text></view>
+    <view wx:elif="{{!rows.length}}" class="state"><view class="state-title">没有找到货品</view><view>换个货号或条码再试。</view></view>
+    <view wx:for="{{rows}}" wx:key="id" class="glass-card">
+      <view class="row">
+        <view class="avatar" style="border-radius:20rpx;">{{item.initial}}</view>
+        <view class="grow">
+          <view class="row-between"><text style="font-size:27rpx;font-weight:700;">{{item.goodsName}}</text><text class="tag {{item.status===1?'':'tag-gold'}}">{{item.statusText}}</text></view>
+          <view class="muted small" style="margin-top:5rpx;">编码 {{item.goodsNo || '无编码'}} · {{item.styleItemName || '未分类'}}</view>
+          <view class="row-between" style="margin-top:14rpx;"><view><text class="money" style="font-size:30rpx;">¥{{item.saleText}}</text><text wx:if="{{showCost}}" class="small" style="color:var(--gold);"> · 成本 ¥{{item.costText}}</text></view><button wx:if="{{item.status===1}}" class="btn-mini primary" data-index="{{index}}" bindtap="sendToSale">去开单 ›</button></view>
+        </view>
+      </view>
+    </view>
+  </block>
+  <block wx:else>
+    <view class="row" style="margin-bottom:16rpx;"><input class="input-mini grow" value="{{ledgerKeyword}}" placeholder="货号或流水备注" placeholder-class="placeholder" bindinput="onLedgerKeyword" bindconfirm="loadLedger" /><button class="btn-mini" bindtap="loadLedger">查找</button></view>
+    <view wx:if="{{ledgerLoading && !ledgerRows.length}}" class="state"><view class="state-title">正在读取流水</view></view>
+    <view wx:elif="{{!ledgerRows.length}}" class="state"><view class="state-title">暂无出入库流水</view></view>
+    <view wx:for="{{ledgerRows}}" wx:key="id" class="glass-card">
+      <view class="row-between"><text style="font-size:25rpx;font-weight:700;">{{item.goodsNo || '库存流水'}}</text><text class="tag {{item.changeQty>=0?'':'tag-gold'}}">{{item.bizTypeText}} {{item.changeText}}</text></view>
+      <view class="muted small" style="margin-top:6rpx;">{{item.ledgerNo || ''}} · {{item.timeText}}</view>
+      <view class="muted small" style="margin-top:6rpx;">结存 {{item.afterQty}} · {{item.remark || '无备注'}}</view>
+    </view>
+  </block>
+  <view wx:if="{{error && rows.length}}" class="glass-card small" style="color:var(--red);">{{error}}</view>
+</view>
+<bottom-nav active=""></bottom-nav>

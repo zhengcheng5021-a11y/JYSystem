@@ -1,0 +1,8 @@
+.theme-switch { position: relative; z-index: 20; }
+.theme-pill { display: inline-flex; align-items: center; gap: 10rpx; min-height: 58rpx; padding: 0 18rpx; border: 1rpx solid var(--line); border-radius: 999rpx; background: var(--surface); color: var(--ink); font-size: 22rpx; }
+.dot { width: 14rpx; height: 14rpx; border-radius: 50%; background: var(--jade); }
+.caret { color: var(--muted); font-size: 18rpx; }
+.theme-menu { position: absolute; left: 0; top: 70rpx; width: 320rpx; padding: 12rpx; border: 1rpx solid var(--line); border-radius: 22rpx; background: var(--surface); box-shadow: 0 16rpx 40rpx rgba(60,40,39,.12); }
+.menu-kicker { padding: 8rpx 12rpx 12rpx; border-bottom: 1rpx solid var(--line); color: var(--muted); font-size: 20rpx; letter-spacing: 2rpx; }
+.menu-item { display: flex; align-items: center; justify-content: space-between; min-height: 72rpx; padding: 0 12rpx; border-radius: 16rpx; color: var(--ink); font-size: 24rpx; }
+.menu-item.on { background: var(--jade-soft); font-weight: 700; }

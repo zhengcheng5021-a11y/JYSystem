@@ -1,0 +1,7 @@
+{
+  "navigationStyle": "custom",
+  "navigationBarTitleText": "销冠话术",
+  "usingComponents": {
+    "theme-switch": "/components/theme-switch/theme-switch"
+  }
+}

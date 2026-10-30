@@ -1,0 +1,7 @@
+{
+  "navigationStyle": "custom",
+  "navigationBarTitleText": "采买入库",
+  "usingComponents": {
+    "theme-switch": "/components/theme-switch/theme-switch"
+  }
+}

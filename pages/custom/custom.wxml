@@ -1,0 +1,23 @@
+<app-nav title="定制预定" back="{{true}}"></app-nav>
+<view class="app-page" style="{{theme.style}}">
+  <view class="top-bar"><theme-switch bind:change="onTheme"></theme-switch><text class="top-meta" bindtap="load">刷新定制单 ↻</text></view>
+  <view class="page-head"><view><view class="eyebrow-row"><text class="seal-dot"></text><text class="eyebrow">BESPOKE ORDERS</text></view><view class="page-title">定制预定</view><view class="page-sub">追踪工坊手作定制进度、已收定金与待收尾款，到货一键签收。</view></view><text class="tag">{{totalText}} 单</text></view>
+  <view class="seg-tabs"><button class="seg-tab {{filter==='all'?'active':''}}" data-filter="all" bindtap="setFilter">全部定制</button><button class="seg-tab {{filter==='waiting'?'active':''}}" data-filter="waiting" bindtap="setFilter">匠造待到货</button><button class="seg-tab {{filter==='arrived'?'active':''}}" data-filter="arrived" bindtap="setFilter">已到店待取</button></view>
+  <view class="row" style="margin-bottom:18rpx;"><input class="input-mini grow" value="{{keyword}}" placeholder="客户、货品或定制单号" placeholder-class="placeholder" bindinput="onKeyword" bindconfirm="load" /><button class="btn-mini" bindtap="load">搜索</button></view>
+  <view wx:if="{{loading && !allRows.length}}" class="state"><view class="state-title">正在读取定制单</view><view>同步工坊与门店进度。</view></view>
+  <view wx:elif="{{error && !allRows.length}}" class="state" bindtap="load"><view class="state-title">定制单加载失败</view><view>{{error}}</view><text class="state-action">重试</text></view>
+  <view wx:elif="{{!rows.length}}" class="state"><view class="state-title">这一栏暂无定制单</view><view>切换上方状态查看其他定制进度。</view></view>
+  <view wx:else>
+    <view wx:for="{{rows}}" wx:key="id" class="glass-card">
+      <view class="row-between"><text class="serif" style="font-size:28rpx;font-weight:700;">{{item.customerText}} · {{item.goodsText}}</text><text class="tag {{item.arrived?'':'tag-gold'}}">{{item.statusText}}</text></view>
+      <view class="muted small" style="margin-top:7rpx;">单号：{{item.customNo || '未编号'}} · 预计取货 {{item.pickupText}}</view>
+      <view class="custom-money">
+        <view class="row-between small"><text>已付定金 <text class="money">¥{{item.depositText}}</text></text><text style="color:var(--gold);">待结尾款 <text class="money">¥{{item.remainText}}</text></text></view>
+        <view class="progress-track" style="margin-top:12rpx;"><view class="progress-fill" style="width:{{item.progress}}%;"></view></view>
+      </view>
+      <view class="row" style="justify-content:flex-end;margin-top:14rpx;flex-wrap:wrap;"><button wx:if="{{!item.arrived}}" class="btn-mini" data-id="{{item.id}}" loading="{{arrivingId===item.id}}" bindtap="arrive">✓ 确认到货</button><button class="btn-mini primary" data-id="{{item.id}}" bindtap="payRemain">去结尾款 ›</button></view>
+    </view>
+  </view>
+  <view wx:if="{{error && allRows.length}}" class="glass-card small" style="color:var(--red);">{{error}}</view>
+</view>
+<bottom-nav active=""></bottom-nav>

@@ -1,0 +1,3 @@
+.timeline-row { display: flex; align-items: flex-start; gap: 16rpx; }
+.timeline-dot { width: 20rpx; height: 20rpx; flex: none; margin-top: 34rpx; border-radius: 50%; background: var(--jade); box-shadow: 0 0 0 8rpx var(--jade-soft); }
+.follow-content { margin-top: 12rpx; padding: 16rpx 18rpx; border-left: 6rpx solid var(--jade); border-radius: 14rpx; background: var(--surface-soft); font-size: 24rpx; line-height: 1.55; }

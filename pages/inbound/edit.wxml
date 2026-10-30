@@ -1,0 +1,46 @@
+<app-nav title="拍照入库" back="{{true}}"></app-nav>
+<view class="app-page no-tab" style="{{theme.style}}">
+  <view class="top-bar"><theme-switch bind:change="onTheme"></theme-switch><text class="top-meta">{{readOnly ? '已确认单据' : '草稿录入中'}}</text></view>
+  <view class="page-head">
+    <view><view class="eyebrow-row"><text class="seal-dot"></text><text class="eyebrow">QUICK CAPTURE</text></view><view class="page-title">{{id ? (header.inboundNo || '入库单') : '拍照闪电入库'}}</view><view class="page-sub">支持复制同款批量连录，2×2 磁贴点选规格。</view></view>
+    <button wx:if="{{!readOnly}}" class="head-action" bindtap="addLine">新增空白件</button>
+  </view>
+  <view wx:if="{{loading}}" class="state"><view class="state-title">正在准备录入项</view></view>
+  <block wx:else>
+    <view class="glass-card">
+      <view class="grid-2">
+        <picker mode="date" value="{{header.inboundTime}}" disabled="{{readOnly}}" bindchange="onDate"><view class="field-line"><text class="field-label">入库日期</text><text class="field-value">{{header.inboundTime || '请选择'}} ▾</text></view></picker>
+        <view class="field-line" bindtap="pickSupplier"><text class="field-label">供货来源 / 工坊</text><text class="field-value">{{header.supplierName || '可不选'}} ▾</text></view>
+      </view>
+      <textarea class="textarea-mini" style="margin-top:14rpx;" value="{{header.remark}}" disabled="{{readOnly}}" placeholder="到货说明" placeholder-class="placeholder" bindinput="onRemark" />
+    </view>
+    <view wx:if="{{!lines.length}}" class="state"><view class="state-title">先添加一件货品</view><view>拍下实品图，补上成本和柜面标价。</view><text class="state-action" bindtap="addLine">新增空白件</text></view>
+    <view wx:for="{{lines}}" wx:key="key" class="glass-card">
+      <view class="row-between" style="padding-bottom:14rpx;border-bottom:1rpx dashed var(--line);">
+        <view class="row"><text class="tag">第 {{index + 1}} 件</text><text class="small" style="color:var(--gold);font-weight:700;">预计毛利 ¥{{item.profitText}} ({{item.profitRate}}%)</text></view>
+        <view wx:if="{{!readOnly}}" class="row"><button class="btn-mini" data-index="{{index}}" bindtap="cloneLine">复制同款</button><button class="btn-mini danger" data-index="{{index}}" bindtap="removeLine">删除</button></view>
+      </view>
+      <input class="input-mini" style="margin-top:14rpx;border-radius:14rpx;font-weight:700;" value="{{item.goodsName}}" disabled="{{readOnly}}" data-index="{{index}}" data-field="goodsName" placeholder="货品名称" placeholder-class="placeholder" bindinput="onLine" />
+      <view class="row" style="margin-top:14rpx;align-items:stretch;">
+        <view class="photo-box" data-index="{{index}}" bindtap="chooseImage"><image wx:if="{{item.imageUrl}}" class="photo-img" src="{{item.imageUrl}}" mode="aspectFill"></image><block wx:else><text class="photo-icon">▣</text><text class="photo-label">拍实品图</text></block></view>
+        <view class="grow" style="display:flex;flex-direction:column;gap:12rpx;">
+          <view class="field-line"><text class="field-label">拿货成本 (¥)</text><input class="input-bare money" type="digit" style="width:170rpx;text-align:right;" value="{{item.costPrice}}" disabled="{{readOnly}}" data-index="{{index}}" data-field="costPrice" bindinput="onLine" /></view>
+          <view class="field-line"><text class="field-label">柜面标价 (¥)</text><input class="input-bare money" type="digit" style="width:170rpx;text-align:right;" value="{{item.salePrice}}" disabled="{{readOnly}}" data-index="{{index}}" data-field="salePrice" bindinput="onLine" /></view>
+        </view>
+      </view>
+      <view class="grid-2" style="margin-top:14rpx;">
+        <view class="spec-tile" data-index="{{index}}" data-kind="style" bindtap="pickAttr"><text class="spec-label">款式分类 *</text><text class="spec-value">{{item.styleItemName || '请选择'}} ›</text></view>
+        <view class="spec-tile" data-index="{{index}}" data-kind="material" bindtap="pickAttr"><text class="spec-label">主石 / 材质</text><text class="spec-value">{{item.materialName || '可不选'}} ›</text></view>
+        <view class="spec-tile" data-index="{{index}}" data-kind="metal" bindtap="pickAttr"><text class="spec-label">贵金属材质</text><text class="spec-value">{{item.metalName || '可不选'}} ›</text></view>
+        <view class="spec-tile" data-index="{{index}}" data-kind="cert" bindtap="pickAttr"><text class="spec-label">鉴定证书</text><text class="spec-value">{{item.certTypeName || '可不选'}} ›</text></view>
+      </view>
+      <textarea class="textarea-mini" style="margin-top:14rpx;min-height:100rpx;" value="{{item.remark}}" disabled="{{readOnly}}" data-index="{{index}}" data-field="remark" placeholder="这件货的备注" placeholder-class="placeholder" bindinput="onLine" />
+    </view>
+    <view wx:if="{{error}}" class="glass-card small" style="color:var(--red);">{{error}}</view>
+  </block>
+</view>
+<view wx:if="{{!readOnly && !loading}}" class="sticky-bar">
+  <view><view class="small" style="font-weight:700;">共 {{lines.length}} 件 · 总成本 <text class="money">¥{{costSumText}}</text></view><view class="muted small">预计总标价 ¥{{saleSumText}}</view></view>
+  <view class="row"><button class="btn-mini" loading="{{saving}}" bindtap="save">存草稿</button><button class="btn-mini primary" loading="{{confirming}}" bindtap="confirm">确认入库</button></view>
+</view>
+<bottom-nav active=""></bottom-nav>

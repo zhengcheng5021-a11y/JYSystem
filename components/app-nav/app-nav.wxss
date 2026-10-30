@@ -1,0 +1,11 @@
+.app-nav { position: relative; z-index: 30; background: var(--nav-bg); color: var(--nav-front); }
+.status-space { width: 100%; background: var(--nav-bg); }
+.nav-bar { position: relative; display: flex; align-items: center; padding-left: 16px; border-bottom: 1rpx solid var(--line); box-sizing: border-box; background: var(--nav-bg); color: var(--nav-front); }
+.nav-side { display: flex; align-items: center; min-width: 74px; }
+.nav-side.left { justify-content: flex-start; }
+.nav-side.right { justify-content: flex-end; }
+.nav-title { position: absolute; left: 50%; max-width: 46%; overflow: hidden; transform: translateX(-50%); color: inherit; font-size: 30rpx; font-weight: 700; letter-spacing: 1rpx; text-overflow: ellipsis; white-space: nowrap; }
+.back-btn { display: inline-flex; height: 64rpx; align-items: center; gap: 2rpx; padding: 0; border: 0; background: transparent; color: inherit; font-size: 24rpx; }
+.back-chevron { margin-top: -3rpx; font-size: 42rpx; line-height: 1; }
+.back-text { font-size: 23rpx; }
+.nav-action { min-height: 52rpx; padding: 0 4rpx; color: inherit; font-size: 22rpx; opacity: .78; }

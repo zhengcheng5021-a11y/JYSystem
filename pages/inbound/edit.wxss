@@ -1,0 +1,7 @@
+.photo-box { display: flex; width: 148rpx; height: 148rpx; flex: none; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; border: 1rpx dashed var(--jade); border-radius: 22rpx; background: var(--surface-soft); color: var(--jade); }
+.photo-img { width: 100%; height: 100%; }
+.photo-icon { font-size: 36rpx; }
+.photo-label { margin-top: 6rpx; font-size: 20rpx; }
+.spec-tile { display: flex; min-height: 100rpx; flex-direction: column; justify-content: center; padding: 14rpx 16rpx; border: 1rpx solid var(--jade); border-radius: 18rpx; background: var(--jade-soft); }
+.spec-label { color: var(--muted); font-size: 19rpx; }
+.spec-value { margin-top: 4rpx; overflow: hidden; color: var(--ink); font-size: 23rpx; font-weight: 700; text-overflow: ellipsis; white-space: nowrap; }

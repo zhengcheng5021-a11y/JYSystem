@@ -1,0 +1,29 @@
+<app-nav title="今日待办"></app-nav>
+<view class="app-page" style="{{theme.style}}">
+  <view class="top-bar"><theme-switch bind:change="onTheme"></theme-switch><text class="top-meta" bindtap="load">同步待办 ↻</text></view>
+  <view class="page-head"><view><view class="eyebrow-row"><text class="seal-dot"></text><text class="eyebrow">ATELIER TASKS</text></view><view class="page-title">今日待办</view><view class="page-sub">要事优先，随记随勾，不漏掉每一项客户承诺与店务。</view></view></view>
+  <view class="grid-2" style="margin-bottom:18rpx;">
+    <view class="mini-metric"><view class="mini-metric-label">今日待处理</view><view class="mini-metric-value">{{openCount}} 项</view></view>
+    <view class="mini-metric"><view class="mini-metric-label">已完成销项</view><view class="mini-metric-value">{{doneCount}} 项</view></view>
+  </view>
+  <view class="seg-tabs"><button class="seg-tab {{view==='today'?'active':''}}" data-view="today" bindtap="setView">今天</button><button class="seg-tab {{view==='overdue'?'active':''}}" data-view="overdue" bindtap="setView">逾期</button><button class="seg-tab {{view==='all'?'active':''}}" data-view="all" bindtap="setView">全部未完</button></view>
+  <view class="glass-card">
+    <view class="row-between" style="margin-bottom:14rpx;"><text class="section-title">✦ 随手记一条待办</text><view class="row"><button class="btn-mini {{priority===4?'danger':''}}" data-priority="4" bindtap="setPriority">紧急</button><button class="btn-mini {{priority===3?'primary':''}}" data-priority="3" bindtap="setPriority">重要</button><button class="btn-mini {{priority===2?'primary':''}}" data-priority="2" bindtap="setPriority">普通</button></view></view>
+    <view class="row"><input class="input-mini grow" value="{{title}}" placeholder="输入待办事项，如：通知客户取改圈手镯" placeholder-class="placeholder" bindinput="onTitle" bindconfirm="add" /><button class="btn-mini primary" loading="{{saving}}" bindtap="add">添加</button></view>
+  </view>
+  <view wx:if="{{loading && !rows.length}}" class="state"><view class="state-title">正在读取待办</view></view>
+  <view wx:elif="{{error && !rows.length}}" class="state" bindtap="load"><view class="state-title">待办加载失败</view><view>{{error}}</view><text class="state-action">重试</text></view>
+  <view wx:elif="{{!rows.length}}" class="state"><view class="state-title">这一栏是空的</view><view>可以先记一条今天要完成的事。</view></view>
+  <view wx:for="{{rows}}" wx:key="id" class="glass-card" data-id="{{item.id}}" data-done="{{item.status===1}}" bindtap="toggle">
+    <view class="row">
+      <view class="check-circle {{item.status===1?'on':''}}">{{item.status===1?'✓':''}}</view>
+      <view class="grow">
+        <view style="font-size:26rpx;font-weight:700;{{item.status===1?'text-decoration:line-through;opacity:.62;':''}}">{{item.title}}</view>
+        <view class="row" style="margin-top:8rpx;"><text class="tag {{item.priority===4?'tag-red':'tag-gold'}}">{{item.priorityText}}</text><text class="muted small">截止：{{item.dueText}}</text></view>
+      </view>
+      <text class="muted small">{{item.status===1?'已完成':'点按完成'}}</text>
+    </view>
+  </view>
+  <view wx:if="{{error && rows.length}}" class="glass-card small" style="color:var(--red);">{{error}}</view>
+</view>
+<bottom-nav active="tasks"></bottom-nav>

@@ -1,0 +1,33 @@
+<app-nav title="客户档案"></app-nav>
+<view class="app-page" style="{{theme.style}}">
+  <view class="top-bar"><theme-switch bind:change="onTheme"></theme-switch><text class="top-meta">共 {{totalText}} 位藏家档案</text></view>
+  <view class="page-head"><view><view class="eyebrow-row"><text class="seal-dot"></text><text class="eyebrow">VIP CLIENTS</text></view><view class="page-title">客户档案</view><view class="page-sub">沉淀东方珠宝藏家私域，支持浮层建档与一键带客去开单。</view></view><button class="head-action" bindtap="openCreate">新建档案</button></view>
+  <view class="row" style="margin-bottom:20rpx;"><input class="input-mini grow" value="{{keyword}}" placeholder="姓名、手机或会员号" placeholder-class="placeholder" bindinput="onKeyword" bindconfirm="search" /><button class="btn-mini" bindtap="search">搜索</button></view>
+  <view wx:if="{{loading && !rows.length}}" class="state"><view class="state-title">正在查找客户</view></view>
+  <view wx:elif="{{error && !rows.length}}" class="state" bindtap="search"><view class="state-title">客户加载失败</view><view>{{error}}</view><text class="state-action">重试</text></view>
+  <view wx:elif="{{!rows.length}}" class="state" bindtap="openCreate"><view class="state-title">没有匹配的客户</view><view>先建立档案，后续可识别开单和记录跟进。</view><text class="state-action">新建客户</text></view>
+  <view wx:for="{{rows}}" wx:key="id" class="glass-card">
+    <view class="row">
+      <view class="avatar">{{item.initial}}</view>
+      <view class="grow">
+        <view class="row-between"><view class="row"><text style="font-size:27rpx;font-weight:700;">{{item.memberName}}</text><text class="tag tag-gold">{{item.levelName || '普通会员'}}</text></view><text class="money small" style="color:var(--gold);">{{item.pointsText}} 积分</text></view>
+        <view class="muted small" style="margin-top:5rpx;">卡号 {{item.memberNo || '未编号'}} · 手机 {{item.phone || '无手机'}}</view>
+      </view>
+    </view>
+    <view class="row" style="justify-content:flex-end;margin-top:16rpx;padding-top:14rpx;border-top:1rpx dashed var(--line);"><button class="btn-mini" data-index="{{index}}" bindtap="contact">☎ 联系</button><button class="btn-mini" data-index="{{index}}" bindtap="follow">❀ 跟进记录</button><button class="btn-mini primary" data-index="{{index}}" bindtap="sendToSale">✦ 带客开单 ›</button></view>
+  </view>
+  <view wx:if="{{error && rows.length}}" class="glass-card small" style="color:var(--red);">{{error}}</view>
+</view>
+<view wx:if="{{creating}}" class="drawer-mask" bindtap="closeCreate">
+  <view class="drawer-panel" catchtap="noop">
+    <view class="drawer-head"><text class="drawer-title">新建藏家客户档案</text><button class="btn-mini" bindtap="closeCreate">关闭 ×</button></view>
+    <view class="drawer-list">
+      <input class="input-mini" value="{{form.memberName}}" data-field="memberName" placeholder="客户姓名 / 雅称" placeholder-class="placeholder" bindinput="onForm" />
+      <input class="input-mini" value="{{form.phone}}" data-field="phone" placeholder="联系电话" placeholder-class="placeholder" bindinput="onForm" />
+      <input class="input-mini" value="{{form.wechatNo}}" data-field="wechatNo" placeholder="微信号，可空" placeholder-class="placeholder" bindinput="onForm" />
+      <button class="btn btn-primary" loading="{{saving}}" bindtap="save">保存并建立档案</button>
+      <view wx:if="{{formError}}" class="small" style="color:var(--red);">{{formError}}</view>
+    </view>
+  </view>
+</view>
+<bottom-nav active="members"></bottom-nav>

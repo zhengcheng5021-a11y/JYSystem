@@ -1,0 +1,6 @@
+.head { display: flex; align-items: flex-start; justify-content: space-between; gap: 24rpx; }
+.copy { min-width: 0; }
+.eyebrow { color: var(--jade); font-size: 21rpx; font-weight: 700; letter-spacing: 2rpx; }
+.title { margin-top: 10rpx; font-family: "Songti SC", "STSong", serif; font-size: 48rpx; font-weight: 700; line-height: 1.15; }
+.subtitle { margin-top: 10rpx; color: var(--muted); font-size: 24rpx; line-height: 1.55; }
+.head-action { flex: none; margin-top: 8rpx; padding: 14rpx 22rpx; border: 1rpx solid var(--jade); border-radius: 999rpx; color: var(--jade); font-size: 23rpx; font-weight: 700; }

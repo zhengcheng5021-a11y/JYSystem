@@ -1,0 +1,5 @@
+.chips { display: flex; flex-wrap: wrap; gap: 12rpx; margin-bottom: 18rpx; }
+.chip { min-height: 52rpx; padding: 0 18rpx; border: 1rpx solid var(--line); border-radius: 999rpx; background: var(--surface); color: var(--muted); font-size: 21rpx; }
+.chip.active { border-color: var(--jade); background: var(--jade-soft); color: var(--jade); font-weight: 700; }
+.script-card { cursor: pointer; }
+.script-content { margin-top: 14rpx; padding: 18rpx; border-radius: 18rpx; background: var(--surface-soft); font-size: 23rpx; line-height: 1.65; }
