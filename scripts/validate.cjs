@@ -8,6 +8,7 @@ function walk(dir, files = []) {
   if (!fs.existsSync(dir)) return files
   for (const item of fs.readdirSync(dir, { withFileTypes: true })) {
     const full = path.join(dir, item.name)
+    if (item.name === 'node_modules') continue
     if (item.isDirectory()) walk(full, files)
     else files.push(full)
   }

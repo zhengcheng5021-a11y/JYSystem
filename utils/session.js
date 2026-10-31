@@ -1,8 +1,5 @@
 const { DEFAULT_API_BASE, DEFAULT_TENANT_ID } = require('./config')
 
-const CONFIG_KEY = 'jingyue_config'
-const CONFIG_VERSION_KEY = 'jingyue_config_version'
-const CONFIG_VERSION = 2
 const TOKEN_KEY = 'jingyue_token'
 const USER_KEY = 'jingyue_user'
 const PERMISSIONS_KEY = 'jingyue_permissions'
@@ -11,38 +8,19 @@ function normalizeBase(value) {
   return String(value || DEFAULT_API_BASE).replace(/\/+$/, '')
 }
 
-function isLegacyDefault(apiBase) {
-  return [
-    'http://192.168.0.234:8888',
-    'http://localhost:8888',
-    'http://127.0.0.1:8888'
-  ].indexOf(apiBase) >= 0
-}
-
+// The service address is fixed in utils/config.js; the tenant defaults to 0.
 function getConfig() {
-  const saved = wx.getStorageSync(CONFIG_KEY) || {}
-  const savedVersion = Number(wx.getStorageSync(CONFIG_VERSION_KEY) || 0)
-  let apiBase = normalizeBase(saved.apiBase)
-  const tenantId = String(saved.tenantId || DEFAULT_TENANT_ID)
-  if (savedVersion < CONFIG_VERSION && isLegacyDefault(apiBase)) {
-    apiBase = DEFAULT_API_BASE
-    wx.setStorageSync(CONFIG_KEY, { apiBase, tenantId })
-  }
-  if (savedVersion < CONFIG_VERSION) wx.setStorageSync(CONFIG_VERSION_KEY, CONFIG_VERSION)
   return {
-    apiBase,
-    tenantId
+    apiBase: normalizeBase(DEFAULT_API_BASE),
+    tenantId: String(DEFAULT_TENANT_ID || '0')
   }
 }
 
 function setConfig(config) {
-  const next = {
-    apiBase: normalizeBase(config && config.apiBase),
-    tenantId: String((config && config.tenantId) || DEFAULT_TENANT_ID)
+  return {
+    apiBase: normalizeBase((config && config.apiBase) || DEFAULT_API_BASE),
+    tenantId: String((config && config.tenantId) || DEFAULT_TENANT_ID || '0')
   }
-  wx.setStorageSync(CONFIG_KEY, next)
-  wx.setStorageSync(CONFIG_VERSION_KEY, CONFIG_VERSION)
-  return next
 }
 
 function getToken() { return wx.getStorageSync(TOKEN_KEY) || '' }

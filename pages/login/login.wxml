@@ -1,5 +1,23 @@
-<view class="login-page" style="{{theme.pageStyle}}" bindtouchstart="onPageTouch">
-  <canvas type="2d" id="zenCanvas" class="zen-canvas"></canvas>
+<view class="login-page" style="{{theme.style}}" bindtouchstart="onPageTouch">
+  <view class="petal-field">
+    <view
+      wx:for="{{petals}}"
+      wx:key="id"
+      class="petal"
+      style="left:{{item.left}}%;animation-duration:{{item.duration}}s;animation-delay:{{item.delay}}s;opacity:{{item.alpha}};"
+    >
+      <view
+        class="petal-shape"
+        style="width:{{item.size}}rpx;height:{{item.size}}rpx;background:{{item.color}};animation-duration:{{item.swayDuration}}s;"
+      ></view>
+    </view>
+    <view
+      wx:for="{{dust}}"
+      wx:key="id"
+      class="dust"
+      style="left:{{item.left}}%;top:{{item.top}}%;width:{{item.size}}rpx;height:{{item.size}}rpx;animation-duration:{{item.duration}}s;animation-delay:{{item.delay}}s;opacity:{{item.alpha}};"
+    ></view>
+  </view>
 
   <view class="atmosphere">
     <view class="ambient-orb" style="background:{{theme.orbGradient}};"></view>
@@ -7,8 +25,8 @@
     <view class="mountain mountain-near" style="background:{{theme.mountainColor}};"></view>
   </view>
 
-  <view class="screen">
-    <view class="nav-shell" style="padding-top:{{statusBarHeight}}px;">
+  <view class="screen screen-{{screenTier}}">
+    <view class="nav-shell" style="padding-top:{{navTop}}px;">
       <view class="nav-row" style="height:{{navHeight}}px;padding-right:{{capsuleSpace}}px;">
         <view class="nav-left">
           <button
@@ -24,21 +42,22 @@
             <text class="theme-pill-label">{{theme.label}}</text>
             <text class="caret {{menuOpen ? 'up' : ''}}">⌄</text>
           </button>
-          <button
-            class="server-pill"
-            style="background:{{theme.capsuleBg}};border-color:{{theme.capsuleBorder}};color:{{theme.capsuleColor}};"
-            bindtap="openServer"
-          >连接</button>
         </view>
       </view>
     </view>
-
     <view class="brand" bindtap="pulseSparkles">
       <view class="logo-stage">
         <view class="logo-halo" style="background:{{theme.logoGlow}};"></view>
-        <image class="logo-art" src="/images/logo.svg" mode="aspectFit"></image>
+        <image class="logo-art" src="/images/logo.png" mode="aspectFit"></image>
+        <view class="gem-glint"></view>
+        <view
+          wx:for="{{burst}}"
+          wx:key="id"
+          class="burst-spark"
+          style="--angle:{{item.angle}}deg;--distance:{{item.distance}}rpx;background:{{item.color}};"
+        ></view>
       </view>
-      <text class="brand-title" style="color:{{theme.textColor}};">JY手作珠宝</text>
+      <text class="brand-title" style="color:{{theme.textColor}};">静悦中式珠宝</text>
       <view class="brand-slogan" style="color:{{theme.subTextColor}};">
         <text class="slogan-line" style="background:{{theme.sloganLine}};"></text>
         <text>东方美学 · 为你而饰</text>
@@ -120,7 +139,7 @@
             </view>
             <text>记住账号</text>
           </view>
-          <button class="text-button" style="color:{{theme.subTextColor}};" bindtap="forgot">忘记密码？</button>
+          <button class="text-button" style="color:{{theme.subTextColor}};" bindtap="forgot" >忘记密码？</button>
         </view>
 
         <button
@@ -141,7 +160,7 @@
         <view class="secondary-row" style="color:{{theme.subTextColor}};">
           <button class="text-button" style="color:{{theme.subTextColor}};" bindtap="register">新用户注册</button>
           <text class="pipe" style="color:{{theme.headBorder}};">|</text>
-          <button class="text-button guest-link" style="color:{{theme.subTextColor}};" bindtap="guest">暂不登录，先去手作集市逛逛 <text class="guest-arrow">›</text></button>
+          <button class="text-button guest-link" style="color:{{theme.subTextColor}};" bindtap="guest">暂不登录去集市逛逛 <text class="guest-arrow">›</text></button>
         </view>
 
         <view class="agreement-row">
@@ -163,9 +182,16 @@
     </view>
   </view>
 
+  <view
+    wx:for="{{ripples}}"
+    wx:key="id"
+    class="touch-ripple"
+    style="left:{{item.left}}%;top:{{item.top}}%;"
+  ></view>
+
   <view wx:if="{{menuOpen}}" class="mask" bindtap="closeMenu">
     <view class="theme-menu" style="top:{{menuTop}}px;" catchtap="noop">
-      <view class="menu-kicker">东方画境 · 意境切换</view>
+      <view class="menu-kicker">画境 · 意境切换</view>
       <view
         wx:for="{{themes}}"
         wx:key="id"
@@ -198,43 +224,6 @@
         <text class="modal-text">{{modalBody}}</text>
       </scroll-view>
       <button class="modal-ok" bindtap="closeModal">已阅读并同意</button>
-    </view>
-  </view>
-
-  <view wx:if="{{serverOpen}}" class="modal-mask" bindtap="closeServer" catchtouchmove="noop">
-    <view class="modal-card" catchtap="noop">
-      <view class="modal-head">
-        <view>
-          <text class="modal-kicker">NETWORK</text>
-          <text class="modal-title">服务端连接</text>
-        </view>
-        <button class="modal-close" bindtap="closeServer">×</button>
-      </view>
-      <view class="modal-fields">
-        <text class="modal-label">API 地址</text>
-        <view class="modal-input-box">
-          <input
-            class="modal-input"
-            value="{{serverForm.apiBase}}"
-            placeholder="http://146.56.241.105:8888"
-            data-field="apiBase"
-            bindinput="onServerInput"
-          />
-        </view>
-        <text class="modal-label">租户 ID</text>
-        <view class="modal-input-box">
-          <input
-            class="modal-input"
-            value="{{serverForm.tenantId}}"
-            placeholder="0"
-            data-field="tenantId"
-            bindinput="onServerInput"
-          />
-        </view>
-        <text class="modal-hint">真机调试请填写电脑的局域网 IP，并确保手机与电脑处于同一网络。</text>
-        <text wx:if="{{serverError}}" class="server-error">{{serverError}}</text>
-      </view>
-      <button class="modal-ok" loading="{{serverTesting}}" bindtap="saveServer">保存并测试连接</button>
     </view>
   </view>
 

@@ -1,8 +1,8 @@
-<view class="app-nav" style="{{theme.style}}">
+<view class="app-nav" style="{{theme.varsStyle}}">
   <view class="status-space" style="height:{{statusBarHeight}}px;"></view>
   <view class="nav-bar" style="height:{{navHeight}}px;padding-right:{{capsuleSpace}}px;">
     <view class="nav-side left">
-      <button wx:if="{{back}}" class="back-btn" bindtap="goBack" aria-label="返回"><text class="back-chevron">‹</text><text class="back-text">返回</text></button>
+      <button wx:if="{{back}}" class="back-btn" catchtap="goBack" aria-label="返回" hover-class="back-btn-hover"><text class="back-chevron">‹</text><text class="back-text">返回</text></button>
     </view>
     <view class="nav-title serif">{{title}}</view>
     <view class="nav-side right">

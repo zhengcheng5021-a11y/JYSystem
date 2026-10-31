@@ -26,7 +26,10 @@ function tab(path, params) {
 function back(fallback) {
   const pages = getCurrentPages()
   if (pages.length > 1) {
-    wx.navigateBack({ delta: 1 })
+    wx.navigateBack({
+      delta: 1,
+      fail() { wx.reLaunch({ url: fallback || '/pages/home/home' }) }
+    })
     return
   }
   wx.reLaunch({ url: fallback || '/pages/home/home' })

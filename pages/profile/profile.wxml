@@ -12,7 +12,7 @@
       </view>
     </view>
   </view>
-  <view class="section-head"><view class="row"><text class="seal-bar"></text><text class="section-title">四时画境 · 主题长廊</text></view><text class="section-note">与登录页光影一脉相承</text></view>
+  <view class="section-head"><view class="row"><text class="seal-bar"></text><text class="section-title">画境长廊 · 主题切换</text></view><text class="section-note">与登录页同一套光影</text></view>
   <view class="season-grid">
     <button wx:for="{{seasons}}" wx:key="id" class="season-card {{theme.id===item.id?'active':''}}" data-id="{{item.id}}" bindtap="chooseSeason">
       <view class="row-between"><view class="row"><text class="season-dot" style="background:{{item.navBg}};border-color:{{item.navFront}};"></text><text class="serif" style="font-size:25rpx;font-weight:700;">{{item.short}}</text></view><text wx:if="{{theme.id===item.id}}" class="tag">当前</text></view>
@@ -23,6 +23,18 @@
     <view class="row-between" style="padding-bottom:16rpx;border-bottom:1rpx solid var(--line);"><view class="grow"><view style="font-size:25rpx;font-weight:700;">API 服务端地址</view><view class="muted small" style="margin-top:5rpx;word-break:break-all;">{{apiBase}}</view></view><text class="tag">点击复制</text></view>
     <view class="muted small" style="margin-top:14rpx;line-height:1.6;">复杂字典配置、批量导入导出与财务长报表继续留在电脑端静悦工作台，小程序端专注柜面高频移动作业。</view>
   </view>
-  <button class="btn btn-danger" style="margin-top:24rpx;" bindtap="logout">退出登录</button>
+  <view class="btn btn-danger profile-logout {{loggingOut ? 'is-loading' : ''}}" style="margin-top:24rpx;" catchtap="logout">
+    {{loggingOut ? '正在退出…' : '退出登录'}}
+  </view>
 </view>
 <bottom-nav active="profile"></bottom-nav>
+<view wx:if="{{logoutConfirmVisible}}" class="logout-modal-mask" catchtap="cancelLogout">
+  <view class="logout-modal" catchtap="noop">
+    <view class="logout-modal-title">退出登录</view>
+    <view class="logout-modal-content">退出后需要重新输入账号密码。</view>
+    <view class="logout-modal-actions">
+      <view class="logout-modal-btn secondary" catchtap="cancelLogout">再检查一下</view>
+      <view class="logout-modal-btn primary" catchtap="confirmLogout">退出</view>
+    </view>
+  </view>
+</view>

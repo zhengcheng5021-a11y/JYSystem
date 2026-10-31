@@ -5,6 +5,10 @@
       {
         "value": "scripts",
         "type": "folder"
+      },
+      {
+        "value": "cloudfunctions/jingyueApi/node_modules",
+        "type": "folder"
       }
     ],
     "include": []
@@ -55,6 +59,7 @@
   "compileType": "miniprogram",
   "libVersion": "3.7.12",
   "appid": "wx433a970950e0ff49",
+  "cloudfunctionRoot": "cloudfunctions/",
   "projectname": "jingyue-workbench",
   "condition": {},
   "simulatorPluginLibVersion": {},

@@ -13,10 +13,12 @@ Page({
     permissionText: '门店顾问权限',
     initial: '静',
     seasons: [],
-    loggingOut: false
+    loggingOut: false,
+    logoutConfirmVisible: false
   },
   onShow() {
     themeUtil.apply(this)
+    this.setData({ loggingOut: false, logoutConfirmVisible: false })
     this.fill()
   },
   fill() {
@@ -45,22 +47,22 @@ Page({
     if (!this.data.apiBase) return
     wx.setClipboardData({ data: this.data.apiBase, success: () => ui.toast('服务端地址已复制', 'success') })
   },
+  noop() {},
   logout() {
     if (this.data.loggingOut) return
-    wx.showModal({
-      title: '退出登录',
-      content: '退出后需要重新输入账号密码。',
-      confirmText: '退出',
-      cancelText: '再检查一下',
-      success: (res) => {
-        if (!res.confirm) return
-        this.setData({ loggingOut: true })
-        auth.logout((ok) => {
-          if (ok) return
-          this.setData({ loggingOut: false })
-          ui.toast('退出失败，请稍后重试', 'none')
-        })
-      }
+    this.setData({ logoutConfirmVisible: true })
+  },
+  cancelLogout() {
+    if (this.data.loggingOut) return
+    this.setData({ logoutConfirmVisible: false })
+  },
+  confirmLogout() {
+    if (this.data.loggingOut) return
+    this.setData({ loggingOut: true, logoutConfirmVisible: false })
+    auth.logout((ok) => {
+      if (ok) return
+      this.setData({ loggingOut: false })
+      ui.toast('登录页未能打开，请重试', 'none')
     })
   },
   onTheme() { themeUtil.apply(this); this.fill() }

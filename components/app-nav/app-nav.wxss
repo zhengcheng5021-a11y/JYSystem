@@ -1,11 +1,48 @@
 .app-nav { position: relative; z-index: 30; background: var(--nav-bg); color: var(--nav-front); }
 .status-space { width: 100%; background: var(--nav-bg); }
-.nav-bar { position: relative; display: flex; align-items: center; padding-left: 16px; border-bottom: 1rpx solid var(--line); box-sizing: border-box; background: var(--nav-bg); color: var(--nav-front); }
+.nav-bar {
+  position: relative; display: flex; align-items: center; padding-left: 24rpx;
+  border-bottom: 1rpx solid var(--line);
+  box-sizing: border-box; background: var(--nav-bg); color: var(--nav-front);
+}
 .nav-side { display: flex; align-items: center; min-width: 74px; }
-.nav-side.left { justify-content: flex-start; }
+.nav-side.left {
+  flex: none;
+  display: flex;
+  align-items: center;
+  padding-left: 20rpx;
+}
 .nav-side.right { justify-content: flex-end; }
-.nav-title { position: absolute; left: 50%; max-width: 46%; overflow: hidden; transform: translateX(-50%); color: inherit; font-size: 30rpx; font-weight: 700; letter-spacing: 1rpx; text-overflow: ellipsis; white-space: nowrap; }
-.back-btn { display: inline-flex; height: 64rpx; align-items: center; gap: 2rpx; padding: 0; border: 0; background: transparent; color: inherit; font-size: 24rpx; }
-.back-chevron { margin-top: -3rpx; font-size: 42rpx; line-height: 1; }
-.back-text { font-size: 23rpx; }
-.nav-action { min-height: 52rpx; padding: 0 4rpx; color: inherit; font-size: 22rpx; opacity: .78; }
+.nav-title {
+  position: absolute; left: 50%; max-width: 46%; overflow: hidden; transform: translateX(-50%);
+  color: inherit; font-family: "Songti SC","STSong",serif;
+  font-size: 32rpx; font-weight: 700; letter-spacing: 3rpx; text-overflow: ellipsis; white-space: nowrap;
+}
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 58rpx;
+  min-height: 58rpx;
+  padding: 0 16rpx;          /* 压缩左右内边距，原来可能过大 */
+  border: 1rpx solid var(--line);
+  border-radius: 999rpx;
+  background: var(--surface);
+  color: var(--muted);
+  box-shadow: 0 3rpx 12rpx rgba(60, 40, 39, 0.06);
+  backdrop-filter: blur(16rpx);
+  -webkit-backdrop-filter: blur(16rpx);
+  line-height: 1;
+}
+.back-btn-hover { opacity: .68; transform: scale(.97); }
+.back-chevron {
+  font-size: 32rpx;
+  font-weight: 300;
+  margin-right: 2rpx;
+  margin-top: -2rpx;
+}
+.back-text {
+  font-size: 22rpx;
+  font-weight: 600;
+}
+.nav-action { min-height: 52rpx; padding: 0 4rpx; color: inherit; font-size: 22rpx; opacity: .82; }

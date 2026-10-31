@@ -1,0 +1,9 @@
+{
+  "name": "jingyue-api-proxy",
+  "version": "1.0.0",
+  "description": "JingYue mini program CloudBase API proxy",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

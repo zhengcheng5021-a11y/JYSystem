@@ -6,7 +6,8 @@ Component({
     theme: {},
     statusBarHeight: 20,
     navHeight: 44,
-    capsuleSpace: 88
+    capsuleSpace: 88,
+    goingBack: false
   },
   properties: {
     title: { type: String, value: '今日' },
@@ -36,6 +37,8 @@ Component({
       this.setData({ theme: themeUtil.current(), statusBarHeight, navHeight, capsuleSpace })
     },
     goBack() {
+      if (this.data.goingBack) return
+      this.setData({ goingBack: true })
       navigation.back(this.data.fallback)
     },
     onAction() {

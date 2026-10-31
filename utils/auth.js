@@ -60,53 +60,32 @@ function currentRoute() {
   return pages.length ? pages[pages.length - 1].route : ''
 }
 
-// Replacing the page immediately from a modal callback can be swallowed while
-// the native dialog is still closing, so retry on a short schedule.
 function goLogin(onDone) {
-  let attempt = 0
-  let finished = false
-
-  function finish(ok) {
-    if (finished) return
-    finished = true
-    if (typeof onDone === 'function') onDone(ok)
+  if (currentRoute() === LOGIN_ROUTE) {
+    if (typeof onDone === 'function') onDone(true)
+    return
   }
 
-  function attemptNavigation() {
-    if (currentRoute() === LOGIN_ROUTE) {
-      finish(true)
-      return
-    }
-    if (attempt >= 4) {
-      finish(false)
-      return
-    }
-
-    const delay = attempt === 0 ? 300 : 220
-    const method = attempt < 3 ? 'reLaunch' : 'redirectTo'
-    attempt += 1
-
-    setTimeout(() => {
-      wx[method]({
-        url: '/' + LOGIN_ROUTE,
-        complete() {
-          setTimeout(() => {
-            if (currentRoute() === LOGIN_ROUTE) finish(true)
-            else attemptNavigation()
-          }, 120)
-        }
-      })
-    }, delay)
-  }
-
-  attemptNavigation()
+  // Let the native confirmation modal close before replacing the page stack.
+  setTimeout(() => {
+    wx.reLaunch({
+      url: '/' + LOGIN_ROUTE,
+      success() { if (typeof onDone === 'function') onDone(true) },
+      fail() {
+        wx.redirectTo({
+          url: '/' + LOGIN_ROUTE,
+          success() { if (typeof onDone === 'function') onDone(true) },
+          fail() { if (typeof onDone === 'function') onDone(false) }
+        })
+      }
+    })
+  }, 200)
 }
 
 function logout(onDone) {
-  // Invalidate the token on the server without letting a slow request block logout.
-  const serverLogout = api.logout()
-  if (serverLogout && typeof serverLogout.catch === 'function') serverLogout.catch(() => {})
-
+  // Do not call the network logout endpoint here. Its 401/error redirect can
+  // race this navigation, especially when the request goes through cloud proxy.
+  // Removing the local token is sufficient to invalidate this device session.
   session.clearSession()
   goLogin(onDone)
 }
